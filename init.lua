@@ -76,16 +76,6 @@ if vim.fn.has("win32") == 1 then
   vim.opt.shellxquote = ""
 end
 
--- JSON specific indentation
-vim.api.nvim_create_autocmd("FileType", {
-  pattern = "json",
-  callback = function()
-    vim.opt_local.shiftwidth = 2
-    vim.opt_local.tabstop = 2
-    vim.opt_local.softtabstop = 2
-  end,
-})
-
 -- Persistent undo
 -- Create undo directory if it doesn't exist (Windows path)
 local undo_dir = vim.fn.expand('~/AppData/Local/nvim/undo')

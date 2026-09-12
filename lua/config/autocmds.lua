@@ -17,10 +17,25 @@ api.nvim_create_autocmd("TextYankPost", {
 api.nvim_create_autocmd("BufWritePre", {
   desc = "Remove trailing whitespace on save",
   group = api.nvim_create_augroup("remove-trailing-whitespace", { clear = true }),
-  callback = function()
-    local save_cursor = vim.fn.getpos(".")
-    vim.cmd([[%s/\s\+$//e]])
-    vim.fn.setpos(".", save_cursor)
+  callback = function(event)
+    local buf = event.buf
+    -- Only ordinary writable file buffers. Running :s in a special buffer
+    -- (checkhealth, help, terminal scrollback) raises an error on write.
+    if vim.bo[buf].buftype ~= "" or not vim.bo[buf].modifiable then
+      return
+    end
+    -- Trailing spaces carry meaning in these: two spaces end a markdown line
+    -- as a hard break, and diff/commit bodies are quoted verbatim.
+    local keep_whitespace = { markdown = true, diff = true, gitcommit = true }
+    if keep_whitespace[vim.bo[buf].filetype] then
+      return
+    end
+    -- winsaveview keeps the scroll position, not just the cursor line, and
+    -- keeppatterns stops this clobbering the last search pattern so that a
+    -- later `n` does not jump to trailing whitespace.
+    local view = vim.fn.winsaveview()
+    vim.cmd([[keeppatterns %s/\s\+$//e]])
+    vim.fn.winrestview(view)
   end,
 })
 

@@ -176,8 +176,20 @@ return {
         "helm_ls",
       }
 
+      -- Version pins, applied only to what Mason installs. vim.lsp.enable()
+      -- below takes plain server names, so the pins cannot live in `servers`.
+      --
+      -- zls must match Zig's major.minor or it refuses to work ("ZLS '0.16.0'
+      -- does not support Zig '0.15.2'"). Bump this together with Zig. Note
+      -- that ensure_installed never downgrades an existing install, and
+      -- "update all" in :Mason will move it back to the newest release.
+      local pinned = { zls = "zls@0.15.1" }
+      local to_install = vim.tbl_map(function(name)
+        return pinned[name] or name
+      end, servers)
+
       require("mason-lspconfig").setup({
-        ensure_installed = servers,
+        ensure_installed = to_install,
         -- Enable explicitly below rather than letting mason-lspconfig do it,
         -- so the enabled set is visible in this file.
         automatic_enable = false,

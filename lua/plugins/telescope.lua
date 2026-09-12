@@ -5,6 +5,26 @@ return {
     "nvim-lua/plenary.nvim",
     -- ... other dependencies
   },
+  cmd = "Telescope",
+  keys = {
+    -- Declared here rather than inside config() so the plugin can stay lazy:
+    -- keymaps set in config() only exist once something else has loaded it.
+    { "<leader>ff", function() require("telescope.builtin").find_files() end, desc = "Find files" },
+    { "<leader>fg", function() require("telescope.builtin").live_grep() end, desc = "Live grep" },
+    { "<leader>fb", function() require("telescope.builtin").buffers() end, desc = "Find buffers" },
+    { "<leader>fh", function() require("telescope.builtin").help_tags() end, desc = "Help tags" },
+    { "<leader>fr", function() require("telescope.builtin").oldfiles() end, desc = "Recent files" },
+    { "<leader>fc", function() require("telescope.builtin").commands() end, desc = "Commands" },
+    { "<leader>fk", function() require("telescope.builtin").keymaps() end, desc = "Keymaps" },
+    { "<leader>fw", function() require("telescope.builtin").grep_string() end, desc = "Find word under cursor" },
+    { "<leader>gF", function() require("telescope.builtin").git_files() end, desc = "Git files (picker)" },
+    { "<leader>gC", function() require("telescope.builtin").git_commits() end, desc = "Git commits (picker)" },
+    { "<leader>gb", function() require("telescope.builtin").git_branches() end, desc = "Git branches (picker)" },
+    { "<leader>lr", function() require("telescope.builtin").lsp_references() end, desc = "LSP references" },
+    { "<leader>ld", function() require("telescope.builtin").lsp_definitions() end, desc = "LSP definitions" },
+    { "<leader>ls", function() require("telescope.builtin").lsp_document_symbols() end, desc = "Document symbols" },
+    { "<leader>lw", function() require("telescope.builtin").lsp_workspace_symbols() end, desc = "Workspace symbols" },
+  },
   config = function()
     local telescope = require("telescope")
     local actions = require("telescope.actions")
@@ -131,29 +151,5 @@ return {
       },
     })
 
-    -- Key mappings for telescope (you can add these to your keymaps.lua instead)
-    local builtin = require("telescope.builtin")
-    vim.keymap.set("n", "<leader>ff", builtin.find_files, { desc = "Find files" })
-    vim.keymap.set("n", "<leader>fg", builtin.live_grep, { desc = "Live grep" })
-    vim.keymap.set("n", "<leader>fb", builtin.buffers, { desc = "Find buffers" })
-    vim.keymap.set("n", "<leader>fh", builtin.help_tags, { desc = "Help tags" })
-    vim.keymap.set("n", "<leader>fr", builtin.oldfiles, { desc = "Recent files" })
-    vim.keymap.set("n", "<leader>fc", builtin.commands, { desc = "Commands" })
-    vim.keymap.set("n", "<leader>fk", builtin.keymaps, { desc = "Keymaps" })
-
-    -- Git related. Capitals here because vim-fugitive owns the lowercase
-    -- pair: <leader>gf is Git fetch and <leader>gc is Git commit.
-    vim.keymap.set("n", "<leader>gF", builtin.git_files, { desc = "Git files (picker)" })
-    vim.keymap.set("n", "<leader>gC", builtin.git_commits, { desc = "Git commits (picker)" })
-    vim.keymap.set("n", "<leader>gb", builtin.git_branches, { desc = "Git branches (picker)" })
-
-    -- LSP related (works great with your languages)
-    vim.keymap.set("n", "<leader>lr", builtin.lsp_references, { desc = "LSP references" })
-    vim.keymap.set("n", "<leader>ld", builtin.lsp_definitions, { desc = "LSP definitions" })
-    vim.keymap.set("n", "<leader>ls", builtin.lsp_document_symbols, { desc = "Document symbols" })
-    vim.keymap.set("n", "<leader>lw", builtin.lsp_workspace_symbols, { desc = "Workspace symbols" })
-
-    -- Search for word under cursor
-    vim.keymap.set("n", "<leader>fw", builtin.grep_string, { desc = "Find word under cursor" })
   end,
 }

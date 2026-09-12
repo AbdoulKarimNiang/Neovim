@@ -29,6 +29,8 @@ return {
         "scss",
         "sql",
         "dockerfile",
+        "terraform",
+        "hcl",
         "gitignore",
         "gitcommit",
         "powershell",

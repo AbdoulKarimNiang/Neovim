@@ -158,6 +158,14 @@ return {
         "jsonls",
         "yamlls",
         "taplo",
+        -- Infrastructure files. k8s manifests are plain YAML and are handled
+        -- by yamlls plus the Kubernetes schema configured above, so there is
+        -- no separate k8s server here; helm_ls covers charts, where the Go
+        -- templating makes them invalid YAML.
+        "dockerls",
+        "docker_compose_language_service",
+        "terraformls",
+        "helm_ls",
       }
 
       require("mason-lspconfig").setup({

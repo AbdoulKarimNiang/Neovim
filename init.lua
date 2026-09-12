@@ -16,6 +16,7 @@ vim.g.autoformat = true
 require("config.options")
 require("config.keymaps")
 require("config.autocmds")
+require("config.filetypes")
 
 -- Bootstrap lazy.nvim
 local lazypath = vim.fn.stdpath("data") .. "/lazy/lazy.nvim"

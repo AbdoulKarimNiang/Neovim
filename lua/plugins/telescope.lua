@@ -137,10 +137,11 @@ return {
     vim.keymap.set('n', '<leader>fc', builtin.commands, { desc = 'Commands' })
     vim.keymap.set('n', '<leader>fk', builtin.keymaps, { desc = 'Keymaps' })
 
-    -- Git related
-    vim.keymap.set('n', '<leader>gf', builtin.git_files, { desc = 'Git files' })
-    vim.keymap.set('n', '<leader>gc', builtin.git_commits, { desc = 'Git commits' })
-    vim.keymap.set('n', '<leader>gb', builtin.git_branches, { desc = 'Git branches' })
+    -- Git related. Capitals here because vim-fugitive owns the lowercase
+    -- pair: <leader>gf is Git fetch and <leader>gc is Git commit.
+    vim.keymap.set('n', '<leader>gF', builtin.git_files, { desc = 'Git files (picker)' })
+    vim.keymap.set('n', '<leader>gC', builtin.git_commits, { desc = 'Git commits (picker)' })
+    vim.keymap.set('n', '<leader>gb', builtin.git_branches, { desc = 'Git branches (picker)' })
 
     -- LSP related (works great with your languages)
     vim.keymap.set('n', '<leader>lr', builtin.lsp_references, { desc = 'LSP references' })

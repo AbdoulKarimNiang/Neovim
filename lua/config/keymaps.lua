@@ -89,7 +89,7 @@ keymap("n", "<leader>fE", "<cmd>Yazi cwd<cr>", { desc = "File explorer at cwd", 
 keymap("x", "<leader>e", "<cmd>Yazi<cr>", { desc = "Open yazi with selection", silent = true })
 
 -- Quick directory navigation
-keymap("n", "<leader>cd", function()
+keymap("n", "<leader>fd", function()
   vim.cmd("Yazi " .. vim.fn.expand("%:p:h"))
 end, { desc = "Open yazi in current file directory", silent = true })
 

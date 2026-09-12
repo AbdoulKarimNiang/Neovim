@@ -142,9 +142,8 @@ return {
 
           map("<leader>rn", vim.lsp.buf.rename, "Rename symbol")
           map("<leader>ca", vim.lsp.buf.code_action, "Code action", { "n", "v" })
-          map("<leader>cf", function()
-            vim.lsp.buf.format({ async = true })
-          end, "Format buffer")
+          -- <leader>cf is owned by conform.nvim, which falls back to the LSP
+          -- formatter for filetypes with no standalone formatter (e.g. ps1).
 
           map("<leader>ds", vim.lsp.buf.document_symbol, "Document symbols")
           map("<leader>wa", vim.lsp.buf.add_workspace_folder, "Add workspace folder")

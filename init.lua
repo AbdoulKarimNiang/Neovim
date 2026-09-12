@@ -7,6 +7,11 @@ vim.g.maplocalleader = " "
 -- Nerd Font is installed (FiraCode Nerd Font) - enables icon glyphs in plugins
 vim.g.have_nerd_font = true
 
+-- Format on save, using each language's standard formatter (see
+-- lua/plugins/conform.lua). <leader>uf turns it off for the current session
+-- when editing a repository that does not share these formatter settings.
+vim.g.autoformat = true
+
 -- Load configuration modules
 require("config.options")
 require("config.keymaps")

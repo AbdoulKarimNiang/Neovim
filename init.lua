@@ -45,9 +45,34 @@ require("lazy").setup({
 
 -- Additional settings for Windows
 if vim.fn.has("win32") == 1 then
-  -- Set PowerShell as default shell
-  vim.opt.shell = "powershell"
-  vim.opt.shellcmdflag = "-NoLogo -NoProfile -ExecutionPolicy RemoteSigned -Command"
+  -- Prefer PowerShell 7 (pwsh) over Windows PowerShell 5.1.
+  -- 5.1 emits OEM/cp1252 on stdout, which mangles UTF-8 output (Nerd Font
+  -- glyphs, accented text) in :terminal, :! and filter commands such as
+  -- <leader>jf. Recipe follows :help shell-powershell.
+  local has_pwsh = vim.fn.executable("pwsh") == 1
+  vim.opt.shell = has_pwsh and "pwsh" or "powershell"
+
+  if has_pwsh then
+    vim.opt.shellcmdflag = table.concat({
+      "-NoLogo",
+      "-NoProfile",
+      "-NonInteractive",
+      "-ExecutionPolicy RemoteSigned",
+      "-Command [Console]::InputEncoding=[Console]::OutputEncoding=[System.Text.UTF8Encoding]::new();"
+        .. "$PSDefaultParameterValues['Out-File:Encoding']='utf8';"
+        .. "$PSStyle.OutputRendering='plaintext';"
+        .. "Remove-Alias -Force -ErrorAction SilentlyContinue tee;",
+    }, " ")
+  else
+    -- 5.1 has no $PSStyle and no Remove-Alias; set encoding only.
+    vim.opt.shellcmdflag = "-NoLogo -NoProfile -NonInteractive -ExecutionPolicy RemoteSigned "
+      .. "-Command [Console]::InputEncoding=[Console]::OutputEncoding=[System.Text.UTF8Encoding]::new();"
+  end
+
+  -- %% is an escaped literal '%' in these options; %s is the filename slot.
+  vim.opt.shellredir = '2>&1 | %%{ "$_" } | Out-File %s; exit $LastExitCode'
+  vim.opt.shellpipe = '2>&1 | %%{ "$_" } | tee %s; exit $LastExitCode'
+  vim.opt.shellquote = ""
   vim.opt.shellxquote = ""
 end
 

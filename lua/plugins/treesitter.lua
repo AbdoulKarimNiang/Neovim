@@ -15,6 +15,7 @@ return {
         "html",
         "lua",
         "markdown",
+        "markdown_inline",
         "vim",
         "vimdoc",
         "python",
@@ -31,6 +32,7 @@ return {
         "gitignore",
         "gitcommit",
         "powershell",
+        "zig",
       },
 
       -- Autoinstall languages that are not installed

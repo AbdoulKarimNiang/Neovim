@@ -24,6 +24,9 @@ return {
       "mason-org/mason.nvim",
       "mason-org/mason-lspconfig.nvim",
       "hrsh7th/cmp-nvim-lsp",
+      -- JSON/YAML schema catalogue: without it yamlls and jsonls parse the
+      -- file but have no idea what the keys are supposed to be.
+      "b0o/SchemaStore.nvim",
     },
     config = function()
       local mason_root = vim.fn.stdpath("data") .. "/mason"
@@ -99,8 +102,49 @@ return {
         settings = { powershell = { codeFormatting = { Preset = "OTBS" } } },
       })
 
+      vim.lsp.config("jsonls", {
+        settings = {
+          json = {
+            schemas = require("schemastore").json.schemas(),
+            validate = { enable = true },
+          },
+        },
+      })
+
       vim.lsp.config("yamlls", {
-        settings = { yaml = { keyOrdering = false } },
+        settings = {
+          yaml = {
+            keyOrdering = false,
+            -- Use the catalogue bundled by SchemaStore.nvim rather than having
+            -- the server fetch its own at startup.
+            schemaStore = { enable = false, url = "" },
+            schemas = require("schemastore").yaml.schemas({
+              extra = {
+                {
+                  name = "Kubernetes",
+                  description = "Kubernetes manifest",
+                  -- "kubernetes" is a keyword yaml-language-server resolves
+                  -- against its bundled k8s schemas, not a URL.
+                  url = "kubernetes",
+                  fileMatch = {
+                    "k8s/**/*.yaml",
+                    "k8s/**/*.yml",
+                    "manifests/**/*.yaml",
+                    "manifests/**/*.yml",
+                    "*.k8s.yaml",
+                    "deploy*.yaml",
+                    "deployment*.yaml",
+                    "service*.yaml",
+                    "ingress*.yaml",
+                    "configmap*.yaml",
+                    "statefulset*.yaml",
+                    "daemonset*.yaml",
+                  },
+                },
+              },
+            }),
+          },
+        },
       })
 
       local servers = {

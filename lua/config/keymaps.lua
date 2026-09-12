@@ -67,8 +67,14 @@ keymap("n", "<leader>ln", "<cmd>lnext<CR>", { desc = "Next location item" })
 keymap("n", "<leader>lp", "<cmd>lprev<CR>", { desc = "Previous location item" })
 
 -- Diagnostic keymaps
-keymap("n", "[d", vim.diagnostic.goto_prev, { desc = "Go to previous diagnostic message" })
-keymap("n", "]d", vim.diagnostic.goto_next, { desc = "Go to next diagnostic message" })
+-- vim.diagnostic.goto_prev/goto_next are deprecated since 0.11 and scheduled
+-- for removal in 0.13; vim.diagnostic.jump() replaces both.
+keymap("n", "[d", function()
+  vim.diagnostic.jump({ count = -1, float = true })
+end, { desc = "Go to previous diagnostic message" })
+keymap("n", "]d", function()
+  vim.diagnostic.jump({ count = 1, float = true })
+end, { desc = "Go to next diagnostic message" })
 keymap("n", "<leader>de", vim.diagnostic.open_float, { desc = "Open floating diagnostic message" })
 keymap("n", "<leader>dl", vim.diagnostic.setloclist, { desc = "Open diagnostics list" })
 

@@ -7,7 +7,9 @@ api.nvim_create_autocmd("TextYankPost", {
   desc = "Highlight when yanking (copying) text",
   group = api.nvim_create_augroup("highlight-yank", { clear = true }),
   callback = function()
-    vim.highlight.on_yank()
+    -- vim.highlight was renamed to vim.hl in 0.11; the old name survives only
+    -- as a deprecated alias (see vim/_editor.lua, _defer_deprecated_module).
+    vim.hl.on_yank()
   end,
 })
 

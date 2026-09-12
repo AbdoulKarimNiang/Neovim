@@ -78,27 +78,16 @@ end, { desc = "Go to next diagnostic message" })
 keymap("n", "<leader>de", vim.diagnostic.open_float, { desc = "Open floating diagnostic message" })
 keymap("n", "<leader>dl", vim.diagnostic.setloclist, { desc = "Open diagnostics list" })
 
--- File manager keymaps (Yazi)
+-- File manager. Yazi owns <leader>e / <leader>E / <leader>yr in its own spec
+-- (lua/plugins/yazi.lua); oil owns - and <leader>-. Only the two bindings that
+-- add something those do not are kept here: the project root, and the Ctrl-n
+-- muscle memory from tree-style explorers.
 keymap("n", "<C-n>", "<cmd>Yazi<cr>", { desc = "Toggle Yazi file manager", silent = true })
 
--- Alternative file explorer mappings
-keymap("n", "<leader>fe", "<cmd>Yazi<cr>", { desc = "File explorer (Yazi)", silent = true })
-keymap("n", "<leader>fE", "<cmd>Yazi cwd<cr>", { desc = "File explorer at cwd", silent = true })
-
--- Open yazi with visual selection (useful for opening specific paths)
-keymap("x", "<leader>e", "<cmd>Yazi<cr>", { desc = "Open yazi with selection", silent = true })
-
--- Quick directory navigation
-keymap("n", "<leader>fd", function()
-  vim.cmd("Yazi " .. vim.fn.expand("%:p:h"))
-end, { desc = "Open yazi in current file directory", silent = true })
-
--- Project root navigation (if you have a root finder function)
 keymap("n", "<leader>pr", function()
   local root = vim.fs.find({ ".git", "package.json", "Cargo.toml", "pyproject.toml" }, { upward = true })[1]
   if root then
-    local project_root = vim.fn.fnamemodify(root, ":h")
-    vim.cmd("Yazi " .. project_root)
+    vim.cmd("Yazi " .. vim.fn.fnamemodify(root, ":h"))
   else
     vim.cmd("Yazi cwd")
   end

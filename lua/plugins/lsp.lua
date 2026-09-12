@@ -61,8 +61,15 @@ return {
               typeCheckingMode = "basic",
               autoSearchPaths = true,
               useLibraryCodeForTypes = true,
-              -- ruff owns import organisation and lint; avoid duplicate hints.
-              diagnosticSeverityOverrides = { reportUnusedImport = "none" },
+              -- Split of duties: ruff lints, pyright does types. Without this
+              -- both report the same problems twice - an undefined name came
+              -- back as pyright's "X is not defined" and ruff's F821
+              -- "Undefined name X" on the same line.
+              diagnosticSeverityOverrides = {
+                reportUnusedImport = "none",
+                reportUnusedVariable = "none",
+                reportUndefinedVariable = "none",
+              },
             },
           },
         },
@@ -162,6 +169,7 @@ return {
         -- by yamlls plus the Kubernetes schema configured above, so there is
         -- no separate k8s server here; helm_ls covers charts, where the Go
         -- templating makes them invalid YAML.
+        "eslint",
         "dockerls",
         "docker_compose_language_service",
         "terraformls",

@@ -50,7 +50,6 @@ opt.writebackup = false
 opt.swapfile = false
 opt.undofile = true
 opt.confirm = true
-opt.hidden = false
 
 -- Completion
 opt.completeopt = "menu,menuone,noselect"
@@ -67,24 +66,6 @@ opt.updatetime = 250
 opt.timeoutlen = 300
 
 -- Display
-opt.list = true
-opt.listchars = { tab = "» ", trail = "·", nbsp = "␣" }
-
--- Case insensitive searching UNLESS /C or capital in search
-opt.ignorecase = true
-opt.smartcase = true
-
--- Keep signcolumn on by default
-opt.signcolumn = "yes"
-
--- Decrease mapped sequence wait time
-opt.timeoutlen = 300
-
--- Configure how new splits should be opened
-opt.splitright = true
-opt.splitbelow = true
-
--- Sets how neovim will display certain whitespace characters in the editor
 opt.list = true
 opt.listchars = { tab = "» ", trail = "·", nbsp = "␣" }
 

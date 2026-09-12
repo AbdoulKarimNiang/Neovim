@@ -57,8 +57,12 @@ opt.completeopt = "menu,menuone,noselect"
 -- Mouse support
 opt.mouse = "a"
 
--- Folding
-opt.foldmethod = "indent"
+-- Folding - treesitter gives structural folds for every language with a
+-- parser installed and degrades to no folds where there is none, which beats
+-- indent-based folding for Python, Rust, Lua, JS, Zig and JSON alike.
+opt.foldmethod = "expr"
+opt.foldexpr = "v:lua.vim.treesitter.foldexpr()"
+opt.foldtext = ""
 opt.foldlevel = 99
 
 -- Update time for better user experience

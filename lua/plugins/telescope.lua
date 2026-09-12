@@ -16,20 +16,24 @@ return {
         selection_caret = "➤ ",
         path_display = { "truncate" },
 
-        -- File ignore patterns (great for Windows)
+        -- These are Lua patterns, not globs. "*.exe" is a valid pattern but
+        -- means "a literal asterisk, any char, exe", so it never matched a
+        -- real filename; the extension filters below were all dead.
+        -- [/\\] covers both separators, since paths arrive backslashed on
+        -- Windows depending on which finder produced them.
         file_ignore_patterns = {
-          "node_modules",
-          ".git/",
-          "dist/",
-          "build/",
-          "target/",
-          "*.exe",
-          "*.dll",
-          "*.pdb",
-          "__pycache__/",
-          "*.pyc",
-          ".venv/",
-          "venv/",
+          "%.git[/\\]",
+          "node_modules[/\\]",
+          "__pycache__[/\\]",
+          "%.venv[/\\]",
+          "venv[/\\]",
+          "dist[/\\]",
+          "build[/\\]",
+          "target[/\\]",
+          "%.exe$",
+          "%.dll$",
+          "%.pdb$",
+          "%.pyc$",
         },
 
         -- Keybindings within telescope
@@ -75,7 +79,7 @@ return {
         find_files = {
           theme = "dropdown",
           previewer = false,
-          hidden = false, -- Show hidden files (useful for .env, .gitignore, etc.)
+          hidden = false, -- do not list dotfiles; flip to true for .env/.gitignore
         },
 
         live_grep = {

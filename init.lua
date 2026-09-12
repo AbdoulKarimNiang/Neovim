@@ -38,7 +38,7 @@ vim.opt.rtp:prepend(lazypath)
 -- Setup lazy.nvim with plugin specifications
 require("lazy").setup({
   -- Load all plugins from lua/plugins/ directory
-  { import = "plugins" }
+  { import = "plugins" },
 }, {
   ui = {
     border = "rounded",
@@ -83,13 +83,13 @@ end
 
 -- Persistent undo
 -- Create undo directory if it doesn't exist (Windows path)
-local undo_dir = vim.fn.expand('~/AppData/Local/nvim/undo')
+local undo_dir = vim.fn.expand("~/AppData/Local/nvim/undo")
 if vim.fn.isdirectory(undo_dir) == 0 then
-    vim.fn.mkdir(undo_dir, 'p')
+  vim.fn.mkdir(undo_dir, "p")
 end
 
 -- Enable persistent undo
 vim.opt.undofile = true
 vim.opt.undodir = undo_dir
-vim.opt.undolevels = 1000      -- Maximum number of changes that can be undone
-vim.opt.undoreload = 10000     -- Maximum number lines to save for undo on buffer reload
+vim.opt.undolevels = 1000 -- Maximum number of changes that can be undone
+vim.opt.undoreload = 10000 -- Maximum number lines to save for undo on buffer reload

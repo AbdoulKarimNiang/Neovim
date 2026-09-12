@@ -6,8 +6,8 @@ return {
     -- ... other dependencies
   },
   config = function()
-    local telescope = require('telescope')
-    local actions = require('telescope.actions')
+    local telescope = require("telescope")
+    local actions = require("telescope.actions")
 
     telescope.setup({
       defaults = {
@@ -85,8 +85,8 @@ return {
         live_grep = {
           theme = "dropdown",
           additional_args = function(opts)
-            return {"--hidden"} -- Search in hidden files too
-          end
+            return { "--hidden" } -- Search in hidden files too
+          end,
         },
 
         buffers = {
@@ -132,29 +132,28 @@ return {
     })
 
     -- Key mappings for telescope (you can add these to your keymaps.lua instead)
-    local builtin = require('telescope.builtin')
-    vim.keymap.set('n', '<leader>ff', builtin.find_files, { desc = 'Find files' })
-    vim.keymap.set('n', '<leader>fg', builtin.live_grep, { desc = 'Live grep' })
-    vim.keymap.set('n', '<leader>fb', builtin.buffers, { desc = 'Find buffers' })
-    vim.keymap.set('n', '<leader>fh', builtin.help_tags, { desc = 'Help tags' })
-    vim.keymap.set('n', '<leader>fr', builtin.oldfiles, { desc = 'Recent files' })
-    vim.keymap.set('n', '<leader>fc', builtin.commands, { desc = 'Commands' })
-    vim.keymap.set('n', '<leader>fk', builtin.keymaps, { desc = 'Keymaps' })
+    local builtin = require("telescope.builtin")
+    vim.keymap.set("n", "<leader>ff", builtin.find_files, { desc = "Find files" })
+    vim.keymap.set("n", "<leader>fg", builtin.live_grep, { desc = "Live grep" })
+    vim.keymap.set("n", "<leader>fb", builtin.buffers, { desc = "Find buffers" })
+    vim.keymap.set("n", "<leader>fh", builtin.help_tags, { desc = "Help tags" })
+    vim.keymap.set("n", "<leader>fr", builtin.oldfiles, { desc = "Recent files" })
+    vim.keymap.set("n", "<leader>fc", builtin.commands, { desc = "Commands" })
+    vim.keymap.set("n", "<leader>fk", builtin.keymaps, { desc = "Keymaps" })
 
     -- Git related. Capitals here because vim-fugitive owns the lowercase
     -- pair: <leader>gf is Git fetch and <leader>gc is Git commit.
-    vim.keymap.set('n', '<leader>gF', builtin.git_files, { desc = 'Git files (picker)' })
-    vim.keymap.set('n', '<leader>gC', builtin.git_commits, { desc = 'Git commits (picker)' })
-    vim.keymap.set('n', '<leader>gb', builtin.git_branches, { desc = 'Git branches (picker)' })
+    vim.keymap.set("n", "<leader>gF", builtin.git_files, { desc = "Git files (picker)" })
+    vim.keymap.set("n", "<leader>gC", builtin.git_commits, { desc = "Git commits (picker)" })
+    vim.keymap.set("n", "<leader>gb", builtin.git_branches, { desc = "Git branches (picker)" })
 
     -- LSP related (works great with your languages)
-    vim.keymap.set('n', '<leader>lr', builtin.lsp_references, { desc = 'LSP references' })
-    vim.keymap.set('n', '<leader>ld', builtin.lsp_definitions, { desc = 'LSP definitions' })
-    vim.keymap.set('n', '<leader>ls', builtin.lsp_document_symbols, { desc = 'Document symbols' })
-    vim.keymap.set('n', '<leader>lw', builtin.lsp_workspace_symbols, { desc = 'Workspace symbols' })
+    vim.keymap.set("n", "<leader>lr", builtin.lsp_references, { desc = "LSP references" })
+    vim.keymap.set("n", "<leader>ld", builtin.lsp_definitions, { desc = "LSP definitions" })
+    vim.keymap.set("n", "<leader>ls", builtin.lsp_document_symbols, { desc = "Document symbols" })
+    vim.keymap.set("n", "<leader>lw", builtin.lsp_workspace_symbols, { desc = "Workspace symbols" })
 
     -- Search for word under cursor
-    vim.keymap.set('n', '<leader>fw', builtin.grep_string, { desc = 'Find word under cursor' })
+    vim.keymap.set("n", "<leader>fw", builtin.grep_string, { desc = "Find word under cursor" })
   end,
 }
-

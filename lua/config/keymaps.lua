@@ -28,6 +28,35 @@ keymap("n", "<S-l>", "<cmd>bnext<CR>", { desc = "Next buffer" })
 keymap("n", "<S-h>", "<cmd>bprevious<CR>", { desc = "Previous buffer" })
 keymap("n", "<leader>bd", "<cmd>bdelete<CR>", { desc = "Delete buffer" })
 
+-- gt / gT. The bar at the top is bufferline in "buffers" mode, so its entries
+-- are buffers, while the built-in gt/gT only move between tab pages - with a
+-- single tab page open they did nothing. Keep the built-in behaviour when
+-- there really are several tab pages; otherwise step through the bar in the
+-- order it is displayed. A count (3gt) still jumps to that tab page.
+local function tab_or_buffer(builtin, cycle_cmd, fallback_cmd)
+  return function()
+    if vim.v.count > 0 or #vim.api.nvim_list_tabpages() > 1 then
+      vim.cmd.normal({ (vim.v.count > 0 and vim.v.count or "") .. builtin, bang = true })
+    else
+      -- bufferline builds its list while drawing the bar, so its cycle command
+      -- is a silent no-op until the bar has rendered (or before the plugin
+      -- loads). Fall back to plain buffer order if nothing moved.
+      local before = vim.api.nvim_get_current_buf()
+      pcall(vim.cmd, cycle_cmd)
+      if vim.api.nvim_get_current_buf() == before then
+        vim.cmd(fallback_cmd)
+      end
+    end
+  end
+end
+keymap("n", "gt", tab_or_buffer("gt", "BufferLineCycleNext", "bnext"), { desc = "Next tab page, or next buffer" })
+keymap(
+  "n",
+  "gT",
+  tab_or_buffer("gT", "BufferLineCyclePrev", "bprevious"),
+  { desc = "Previous tab page, or previous buffer" }
+)
+
 -- Better indenting
 keymap("v", "<", "<gv", { desc = "Indent left" })
 keymap("v", ">", ">gv", { desc = "Indent right" })

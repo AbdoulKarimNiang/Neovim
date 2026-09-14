@@ -37,6 +37,10 @@ return {
       function()
         vim.g.autoformat = not vim.g.autoformat
         vim.notify("Format on save: " .. (vim.g.autoformat and "ON" or "OFF"))
+        -- Update the statusline indicator now rather than on the next redraw.
+        pcall(function()
+          require("lualine").refresh()
+        end)
       end,
       desc = "Toggle format on save",
     },

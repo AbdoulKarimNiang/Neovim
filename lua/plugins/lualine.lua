@@ -54,15 +54,67 @@ return {
       end,
     }
 
-    local filename = {
-      "filename",
-      file_status = true, -- displays file status (readonly status, modified status)
-      path = 0, -- 0 = just filename, 1 = relative path, 2 = absolute path
-    }
-
     local hide_in_width = function()
       return vim.fn.winwidth(0) > 100
     end
+
+    local filename = {
+      "filename",
+      file_status = true, -- displays file status (readonly status, modified status)
+      -- Relative path: several files share a name (e.g. the Ran_PowerQuery*.pq
+      -- variants) and the bare name did not tell them apart. Long paths are
+      -- shortened from the left to fit.
+      path = 1,
+      shorting_target = 40,
+    }
+
+    -- Project: the git root's directory name, else the file's folder name.
+    -- Cached per buffer because a file's project does not change, and this
+    -- component is evaluated on every statusline redraw.
+    local project = {
+      function()
+        local buf = vim.api.nvim_get_current_buf()
+        if vim.bo[buf].buftype ~= "" or vim.api.nvim_buf_get_name(buf) == "" then
+          return vim.fn.fnamemodify(vim.fn.getcwd(), ":t")
+        end
+        if not vim.b[buf].lualine_project then
+          -- Outside git, use the file's own folder: the working directory can be
+          -- unrelated (a file opened from Explorer may start nvim in System32).
+          local root = vim.fs.root(buf, { ".git" }) or vim.fs.dirname(vim.api.nvim_buf_get_name(buf))
+          vim.b[buf].lualine_project = vim.fn.fnamemodify(root, ":t")
+        end
+        return vim.b[buf].lualine_project
+      end,
+      icon = "\u{f0770}",
+    }
+
+    -- Language servers attached to the current buffer. Makes a server that
+    -- failed to start (like a mismatched zls) visible at a glance.
+    local lsp_clients = {
+      function()
+        local names = {}
+        for _, client in ipairs(vim.lsp.get_clients({ bufnr = 0 })) do
+          names[#names + 1] = client.name
+        end
+        return table.concat(names, " ")
+      end,
+      icon = "\u{f085}",
+      cond = function()
+        return hide_in_width() and #vim.lsp.get_clients({ bufnr = 0 }) > 0
+      end,
+    }
+
+    -- Format-on-save state. <leader>uf toggles it silently otherwise; shown in
+    -- the warning colour while it is off.
+    local format_on_save = {
+      function()
+        return vim.g.autoformat and "fmt" or "fmt off"
+      end,
+      icon = "\u{f0266}",
+      color = function()
+        return not vim.g.autoformat and "DiagnosticWarn" or nil
+      end,
+    }
 
     local diagnostics = {
       "diagnostics",
@@ -99,9 +151,10 @@ return {
       },
       sections = {
         lualine_a = { mode },
-        lualine_b = { "branch" },
+        lualine_b = { project, "branch" },
         lualine_c = { filename },
-        lualine_x = { diagnostics, diff, { "encoding", cond = hide_in_width }, { "filetype", cond = hide_in_width } },
+        -- encoding dropped: it was always utf-8 and only took space.
+        lualine_x = { diagnostics, diff, lsp_clients, format_on_save, { "filetype", cond = hide_in_width } },
         lualine_y = { "location" },
         lualine_z = { "progress" },
       },

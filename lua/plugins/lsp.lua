@@ -197,6 +197,9 @@ return {
 
       vim.lsp.enable(servers)
 
+      -- Power Query is installed outside Mason; see lua/config/powerquery.lua.
+      require("config.powerquery").setup()
+
       -- Buffer-local keymaps, bound only once a server actually attaches.
       -- Prefixes line up with the which-key groups: c=Code, r=Rename, w=Workspace, d=Document.
       vim.api.nvim_create_autocmd("LspAttach", {

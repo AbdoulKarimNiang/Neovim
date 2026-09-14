@@ -14,6 +14,7 @@ return {
       { "<leader>b", group = "[B]uffer" },
       { "<leader>c", group = "[C]ode (LSP)" },
       { "<leader>d", group = "[D]iagnostics / [D]ocument" },
+      { "<leader>D", group = "[D]atabase" },
       { "<leader>f", group = "[F]ind / files" },
       { "<leader>g", group = "[G]it" },
       { "<leader>j", group = "[J]SON" },

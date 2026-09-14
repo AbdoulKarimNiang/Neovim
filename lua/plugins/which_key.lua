@@ -23,7 +23,7 @@ return {
       { "<leader>q", group = "[Q]uickfix" },
       { "<leader>r", group = "[R]ename" },
       { "<leader>s", group = "[S]plit windows" },
-      { "<leader>t", group = "[T]erminal" },
+      { "<leader>t", group = "[T]erminal / [T]ests" },
       { "<leader>u", group = "[U]I toggles" },
       { "<leader>w", group = "[W]orkspace (LSP)" },
       { "<leader>y", group = "[Y]azi" },

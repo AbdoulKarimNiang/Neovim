@@ -20,6 +20,7 @@ return {
       { "<leader>j", group = "[J]SON" },
       { "<leader>l", group = "[L]SP pickers / location list" },
       { "<leader>m", group = "[M]olten (Jupyter)" },
+      { "<leader>o", group = "[O]pencode" },
       { "<leader>p", group = "[P]roject / sessions" },
       { "<leader>q", group = "[Q]uickfix" },
       { "<leader>r", group = "[R]ename" },

@@ -21,8 +21,8 @@ require("config.filetypes")
 -- Bootstrap lazy.nvim
 local lazypath = vim.fn.stdpath("data") .. "/lazy/lazy.nvim"
 
--- Use simpler directory check for Windows
-if not vim.fn.isdirectory(lazypath) then
+-- vim.fn.isdirectory returns 0/1, and 0 is truthy in Lua, so compare explicitly
+if vim.fn.isdirectory(lazypath) == 0 then
   vim.fn.system({
     "git",
     "clone",
